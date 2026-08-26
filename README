@@ -1,1 +1,141 @@
-jnlnj
+# Paramedic AI Machine Learning
+
+**Clinical deterioration risk demonstration using machine learning and Streamlit.**
+
+Paramedic AI is a simple Streamlit application that accepts basic patient vital signs and uses a pre-trained machine-learning model to estimate the probability of clinical deterioration.
+
+> ⚠️ **REFERENCE ONLY — NOT FOR CLINICAL DECISION MAKING**
+
+## Features
+
+*  Interactive Streamlit interface
+*  Patient age input
+*  Heart rate
+*  Systolic and diastolic blood pressure
+*  Respiratory rate
+*  SpO₂
+*  Temperature
+*  Machine-learning risk prediction
+*  Estimated probability displayed as a percentage
+*  Simple higher-risk / lower-risk classification
+
+## How It Works
+
+The application collects seven patient features:
+
+| Feature            | Description                    |
+| ------------------ | ------------------------------ |
+| `age`              | Patient age                    |
+| `heart_rate`       | Heart rate in beats per minute |
+| `systolic_bp`      | Systolic blood pressure        |
+| `diastolic_bp`     | Diastolic blood pressure       |
+| `respiratory_rate` | Respiratory rate               |
+| `spo2`             | Oxygen saturation percentage   |
+| `temperature`      | Body temperature in °F         |
+
+When **Assess Risk** is selected, the application:
+
+1. Loads the trained model from `model.joblib`.
+2. Creates a pandas DataFrame containing the entered vital signs.
+3. Passes the data to the model.
+4. Obtains a probability using `predict_proba()`.
+5. Displays the estimated probability.
+6. Labels the result as **HIGHER RISK** when the probability is at least 50%, otherwise **LOWER RISK**.
+
+## Project Structure
+
+```text
+.
+├── app.py
+├── model.joblib
+├── requirements.txt
+└── README.md
+```
+
+## Installation
+
+Clone the repository and navigate into the project:
+
+```bash
+git clone https://github.com/YOUR-USERNAME/paramedic-ai.git
+cd paramedic-ai
+```
+
+Create and activate a virtual environment:
+
+```bash
+python -m venv .venv
+```
+
+### macOS / Linux
+
+```bash
+source .venv/bin/activate
+```
+
+### Windows
+
+```powershell
+.venv\Scripts\activate
+```
+
+Install the dependencies:
+
+```bash
+pip install streamlit pandas joblib
+```
+
+## Running the Application
+
+Start the Streamlit application with:
+
+```bash
+streamlit run app.py
+```
+
+Streamlit will provide a local URL where you can interact with the application.
+
+## Model
+
+The application expects a trained model at:
+
+```text
+model.joblib
+```
+
+The model must support:
+
+```python
+model.predict_proba(data)
+```
+
+and return probabilities for the target classes.
+
+The application uses the probability of class `1`:
+
+```python
+probability = model.predict_proba(data)[0][1]
+```
+
+## Dataset
+
+This project is intended as a **machine-learning demonstration using a small MIMIC-IV demo dataset**.
+
+The dataset and resulting model should not be interpreted as providing clinically validated predictions. Dataset characteristics, preprocessing, model selection, calibration, class definitions, and validation methodology all substantially affect the meaning of the output.
+
+## ⚠️ Medical Disclaimer
+
+**This project is for educational and demonstration purposes only.**
+
+It is **not a medical device**, clinical decision-support system, diagnostic tool, or substitute for professional medical judgment.
+
+The predictions produced by this application:
+
+* have not been established as clinically valid;
+* should not be used to diagnose or treat patients;
+* should not be used to determine patient disposition or treatment;
+* should not be used in emergency medical services or other clinical settings;
+* may be inaccurate or misleading, particularly for patients or populations unlike those represented in the training data.
+
+**Never use this application to make patient-care decisions.**
+**Paramedic AI** is an educational demonstration of how a machine-learning model can be integrated into a simple Streamlit interface. It should not be used for clinical care.
